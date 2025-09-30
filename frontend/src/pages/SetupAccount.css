@@ -1,0 +1,25 @@
+.setup-account-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.setup-account-card {
+  width: 450px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.setup-account-title {
+  text-align: center;
+  margin: 0;
+  color: #1890ff;
+}
+
+.setup-account-subtitle {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #666;
+  font-size: 14px;
+}

@@ -1,0 +1,34 @@
+.student-layout {
+  min-height: 100vh;
+}
+
+.student-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #001529;
+  padding: 0 24px;
+}
+
+.student-header h2 {
+  color: white;
+  margin: 0;
+}
+
+.student-header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.student-header-actions .ant-btn:first-child {
+  margin-right: 8px;
+}
+
+.student-sider {
+  height: 100%;
+  border-right: 0;
+}
+
+.student-content-layout {
+  padding: 24px;
+}
