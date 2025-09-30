@@ -1,7 +1,6 @@
 require('dotenv').config();
 
 const sendSMS = async (phoneNumber, message) => {
-  // Always log SMS to console (don't send real SMS)
   console.log(`[SMS LOG] SMS to ${phoneNumber}: ${message}`);
   return { success: true, message: 'SMS logged to console' };
 
