@@ -13,7 +13,6 @@ const Login = () => {
     setLoading(true);
     try {
       const response = await authAPI.createAccessCode(values.phoneNumber);
-      console.log('API Response:', response.data);
       localStorage.setItem('tempPhone', values.phoneNumber);
       localStorage.setItem('loginMethod', 'phone');
       
@@ -35,7 +34,6 @@ const Login = () => {
     setLoading(true);
     try {
       const response = await authAPI.loginEmail(values.email);
-      console.log('API Response:', response.data);
       localStorage.setItem('tempEmail', values.email);
       localStorage.setItem('loginMethod', 'email');
       

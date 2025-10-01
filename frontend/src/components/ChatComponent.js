@@ -24,7 +24,11 @@ const ChatComponent = ({ currentUser, students, selectedStudent, setSelectedStud
     });
 
     newSocket.on('newMessage', (message) => {
-      setMessages(prev => [...prev, message]);
+      setMessages(prev => {
+        const exists = prev.find(m => m.id === message.id);
+        if (exists) return prev;
+        return [...prev, message];
+      });
     });
 
     return () => newSocket.close();
@@ -36,9 +40,13 @@ const ChatComponent = ({ currentUser, students, selectedStudent, setSelectedStud
         try {
           const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3001/api'}/auth/getInstructor`);
           const data = await response.json();
-          if (data.success) {
+          console.log('Instructor data:', data);
+          if (data.success && data.instructor) {
+            console.log('Setting instructor phone to:', data.instructor.phone);
             setInstructorPhone(data.instructor.phone);
             setChatPartner(data.instructor.phone);
+          } else {
+            console.error('No instructor found in response');
           }
         } catch (error) {
           console.error('Failed to fetch instructor:', error);
@@ -49,7 +57,7 @@ const ChatComponent = ({ currentUser, students, selectedStudent, setSelectedStud
   }, [isStudent]);
 
   useEffect(() => {
-    if (chatPartner && socket) {
+    if (socket && ((isStudent && instructorPhone) || (!isStudent && chatPartner))) {
       const partner = isStudent ? instructorPhone : chatPartner;
       if (!partner) return;
 
@@ -62,7 +70,7 @@ const ChatComponent = ({ currentUser, students, selectedStudent, setSelectedStud
         }
       });
     }
-  }, [chatPartner, socket, currentUser, isStudent, instructorPhone]);
+  }, [chatPartner, socket, currentUser.phone, isStudent, instructorPhone]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -82,6 +90,18 @@ const ChatComponent = ({ currentUser, students, selectedStudent, setSelectedStud
       message.error('Chat partner not found');
       return;
     }
+
+    const newMessage = {
+      id: Date.now().toString(),
+      from: currentUser.phone,
+      to: recipient,
+      message: messageText,
+      fromRole: currentUser.role,
+      toRole: isStudent ? 'instructor' : 'student',
+      timestamp: new Date().toISOString()
+    };
+
+    setMessages(prev => [...prev, newMessage]);
 
     socket.emit('sendMessage', {
       from: currentUser.phone,
@@ -133,7 +153,7 @@ const ChatComponent = ({ currentUser, students, selectedStudent, setSelectedStud
           >
             {students?.map(student => (
               <Select.Option key={student.phone} value={student.phone}>
-                {student.name}
+                {student.name} ({student.phone})
               </Select.Option>
             ))}
           </Select>
@@ -146,6 +166,9 @@ const ChatComponent = ({ currentUser, students, selectedStudent, setSelectedStud
           value={messageText}
           onChange={(e) => setMessageText(e.target.value)}
           onPressEnter={(e) => {
+            if (e.nativeEvent.isComposing) {
+              return;
+            }
             if (!e.shiftKey) {
               e.preventDefault();
               handleSendMessage();

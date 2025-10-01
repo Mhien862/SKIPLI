@@ -59,10 +59,21 @@ router.post('/validateAccessCode', async (req, res) => {
 
     await db.collection('accessCodes').doc(phoneNumber).delete();
 
+    const instructorPhone = process.env.INSTRUCTOR_PHONE || '+1234567890';
+    const normalizedInstructorPhone = instructorPhone.replace(/\s+/g, '');
+    const normalizedLoginPhone = phoneNumber.replace(/\s+/g, '');
+
     const userDoc = await db.collection('users').doc(phoneNumber).get();
     
     if (userDoc.exists) {
       const userData = userDoc.data();
+      
+      if (userData.role === 'instructor' && normalizedLoginPhone !== normalizedInstructorPhone) {
+        return res.status(403).json({ 
+          error: 'Unauthorized instructor phone number.' 
+        });
+      }
+      
       return res.json({ 
         success: true, 
         userType: userData.role,
@@ -70,9 +81,16 @@ router.post('/validateAccessCode', async (req, res) => {
       });
     }
 
+    if (normalizedLoginPhone !== normalizedInstructorPhone) {
+      return res.status(403).json({ 
+        error: 'This phone number is not registered. Please contact your instructor or use email login.' 
+      });
+    }
+
     await db.collection('users').doc(phoneNumber).set({
       phone: phoneNumber,
       role: 'instructor',
+      name: 'Instructor',
       createdAt: new Date().toISOString()
     });
 
@@ -81,7 +99,8 @@ router.post('/validateAccessCode', async (req, res) => {
       userType: 'instructor',
       user: {
         phone: phoneNumber,
-        role: 'instructor'
+        role: 'instructor',
+        name: 'Instructor'
       }
     });
   } catch (error) {
@@ -169,13 +188,16 @@ router.post('/validateEmailAccessCode', async (req, res) => {
 
 router.get('/getInstructor', async (req, res) => {
   try {
-    const instructorsSnapshot = await db.collection('users').where('role', '==', 'instructor').limit(1).get();
+    const instructorPhone = process.env.INSTRUCTOR_PHONE || '+1234567890';
+    const normalizedPhone = instructorPhone.replace(/\s+/g, '');
     
-    if (instructorsSnapshot.empty) {
+    const instructorDoc = await db.collection('users').doc(normalizedPhone).get();
+    
+    if (!instructorDoc.exists) {
       return res.status(404).json({ error: 'No instructor found' });
     }
 
-    const instructor = instructorsSnapshot.docs[0].data();
+    const instructor = instructorDoc.data();
     res.json({ success: true, instructor });
   } catch (error) {
     console.error('Error fetching instructor:', error);

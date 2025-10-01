@@ -55,7 +55,6 @@ io.on('connection', (socket) => {
       const chatId = [from, to].sort().join('_');
       await db.collection('messages').doc(chatId).collection('chat').add(chatMessage);
 
-      io.to(from).emit('newMessage', chatMessage);
       io.to(to).emit('newMessage', chatMessage);
     } catch (error) {
       console.error('Error saving message:', error);
@@ -85,7 +84,7 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     activeUsers.delete(socket.id);
-    console.log('User disconnected:', socket.id);
+    console.log('disconnected:', socket.id);
   });
 });
 

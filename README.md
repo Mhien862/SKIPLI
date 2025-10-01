@@ -30,6 +30,8 @@ Tạo file `.env` trong thư mục backend:
 ```env
 PORT=3001
 
+INSTRUCTOR_PHONE=+1234567890
+
 TWILIO_ACCOUNT_SID=your_twilio_account_sid
 TWILIO_AUTH_TOKEN=your_twilio_auth_token
 TWILIO_PHONE_NUMBER=your_twilio_phone_number
@@ -100,20 +102,43 @@ npm start
 
 Frontend chạy tại http://localhost:3000
 
+## Lưu ý quan trọng
+
+### Đăng nhập
+- SMS Login: Chỉ số điện thoại được cấu hình trong INSTRUCTOR_PHONE mới có thể đăng nhập với role Instructor
+- Email Login: Dành cho Student (phải được Instructor thêm vào trước)
+- Twilio chưa được triển khai hoàn toàn, hiện tại đang dùng dev mode (code hiển thị trên màn hình)
+
 ## Biến môi trường
 
 ### Backend .env
 - PORT: Cổng server (mặc định: 3001)
-- TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER: Thông tin Twilio
+- INSTRUCTOR_PHONE: Số điện thoại duy nhất có quyền đăng nhập làm Instructor
+- TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER: Thông tin Twilio (chưa triển khai)
 - EMAIL_USER, EMAIL_PASS: Thông tin Gmail để gửi email
 - FIREBASE_PROJECT_ID, FIREBASE_PRIVATE_KEY, FIREBASE_CLIENT_EMAIL: Thông tin Firebase
 - NODE_ENV: development hoặc production
-- SMS_PROVIDER: dev, twilio, hoặc sms.to
+- SMS_PROVIDER: dev (chế độ hiện tại)
 - FRONTEND_URL: URL frontend cho CORS
 
 ### Frontend .env
 - REACT_APP_API_URL: URL API backend
 - REACT_APP_SOCKET_URL: URL server Socket.io
+
+## Screenshots
+
+### Login & Access Code
+![Login](screenshots/Login.png)
+![Access Code](screenshots/access_code.png)
+
+### Instructor Dashboard
+![Student Management](screenshots/student_manage.png)
+![Assign Lesson](screenshots/Assign_lesson.png)
+![Lesson Tracking](screenshots/Lesson_tracking.png)
+![Chat](screenshots/Message.png)
+
+### Student Dashboard
+![Mark as Done](screenshots/Mark%20as%20done.png)
 
 
 
