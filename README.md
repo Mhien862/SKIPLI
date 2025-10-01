@@ -74,13 +74,7 @@ REACT_APP_SOCKET_URL=http://localhost:3001
 
 ### 5. Cấu hình Twilio (Tùy chọn)
 
-1. Đăng ký tại https://www.twilio.com
-2. Lấy Account SID và Auth Token
-3. Lấy số điện thoại Twilio
-4. Cập nhật thông tin vào file .env của backend
-5. Đổi SMS_PROVIDER=dev thành SMS_PROVIDER=twilio
 
-Lưu ý: Ở chế độ development (SMS_PROVIDER=dev), mã xác thực sẽ được hiển thị trong console.
 
 ## Chạy ứng dụng
 
