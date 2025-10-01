@@ -12,10 +12,17 @@ const Login = () => {
   const handlePhoneLogin = async (values) => {
     setLoading(true);
     try {
-      await authAPI.createAccessCode(values.phoneNumber);
+      const response = await authAPI.createAccessCode(values.phoneNumber);
+      console.log('API Response:', response.data);
       localStorage.setItem('tempPhone', values.phoneNumber);
       localStorage.setItem('loginMethod', 'phone');
-      message.success('Access code sent to your phone (check console in dev mode)');
+      
+      if (response.data.devCode) {
+        message.success(`access code: ${response.data.devCode}`, 10);
+      } else {
+        message.success('Access code sent to your phone');
+      }
+      
       navigate('/verify');
     } catch (error) {
       message.error(error.response?.data?.error || 'Failed to send access code');
@@ -27,10 +34,17 @@ const Login = () => {
   const handleEmailLogin = async (values) => {
     setLoading(true);
     try {
-      await authAPI.loginEmail(values.email);
+      const response = await authAPI.loginEmail(values.email);
+      console.log('API Response:', response.data);
       localStorage.setItem('tempEmail', values.email);
       localStorage.setItem('loginMethod', 'email');
-      message.success('Access code sent to your email (check console in dev mode)');
+      
+      if (response.data.devCode) {
+        message.success(`Your access code: ${response.data.devCode}`, 10);
+      } else {
+        message.success('Access code sent to your email');
+      }
+      
       navigate('/verify');
     } catch (error) {
       message.error(error.response?.data?.error || 'Failed to send access code');

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout, Menu, Button, message } from 'antd';
-import { UserOutlined, BookOutlined, MessageOutlined, LogoutOutlined } from '@ant-design/icons';
+import { UserOutlined, BookOutlined, MessageOutlined, LogoutOutlined, CheckSquareOutlined } from '@ant-design/icons';
 import StudentManagement from '../components/StudentManagement';
 import LessonAssignment from '../components/LessonAssignment';
+import LessonTracking from '../components/LessonTracking';
 import ChatComponent from '../components/ChatComponent';
 import { instructorAPI } from '../config/api';
 import './InstructorDashboard.css';
@@ -42,6 +43,8 @@ const InstructorDashboard = () => {
         return <StudentManagement students={students} fetchStudents={fetchStudents} />;
       case 'lessons':
         return <LessonAssignment students={students} />;
+      case 'tracking':
+        return <LessonTracking students={students} />;
       case 'chat':
         return (
           <ChatComponent 
@@ -74,6 +77,7 @@ const InstructorDashboard = () => {
             items={[
               { key: 'students', icon: <UserOutlined />, label: 'Students' },
               { key: 'lessons', icon: <BookOutlined />, label: 'Assign Lessons' },
+              { key: 'tracking', icon: <CheckSquareOutlined />, label: 'Lesson Tracking' },
               { key: 'chat', icon: <MessageOutlined />, label: 'Messages' }
             ]}
           />

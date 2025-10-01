@@ -1,30 +1,15 @@
-# Classroom Management Application
+# Ứng dụng Quản lý Lớp học
 
-Full-stack classroom management system with React, Express, Firebase and Socket.io.
+Hệ thống quản lý lớp học full-stack với React, Express, Firebase và Socket.io.
 
-## Tech Stack
+## Công nghệ sử dụng
 
 Frontend: React, Ant Design, Axios, Socket.io Client
 Backend: Node.js, Express, Firebase Admin SDK, Socket.io, Twilio, Nodemailer
 
-## Project Structure
 
-```
-SKIPLI/
-├── backend/
-│   ├── config/
-│   ├── routes/
-│   ├── utils/
-│   ├── server.js
-│   └── package.json
-├── frontend/
-│   ├── src/
-│   ├── public/
-│   └── package.json
-└── README.md
-```
 
-## Setup Instructions
+## Hướng dẫn cài đặt
 
 ### 1. Clone Repository
 
@@ -33,14 +18,14 @@ git clone <repository-url>
 cd SKIPLI
 ```
 
-### 2. Backend Setup
+### 2. Cài đặt Backend
 
 ```bash
 cd backend
 npm install
 ```
 
-Create `.env` file in backend directory:
+Tạo file `.env` trong thư mục backend:
 
 ```env
 PORT=3001
@@ -62,105 +47,73 @@ SMS_PROVIDER=dev
 FRONTEND_URL=http://localhost:3000
 ```
 
-### 3. Frontend Setup
+### 3. Cài đặt Frontend
 
 ```bash
 cd ../frontend
 npm install
 ```
 
-Create `.env` file in frontend directory:
+Tạo file `.env` trong thư mục frontend:
 
 ```env
 REACT_APP_API_URL=http://localhost:3001/api
 REACT_APP_SOCKET_URL=http://localhost:3001
 ```
 
-### 4. Firebase Configuration
+### 4. Cấu hình Firebase
 
-1. Go to Firebase Console (https://console.firebase.google.com)
-2. Create new project
-3. Enable Firestore Database
-4. Go to Project Settings - Service Accounts
-5. Generate new private key
-6. Copy credentials to backend .env file
+1. Truy cập Firebase Console (https://console.firebase.google.com)
+2. Tạo project mới
+3. Bật Firestore Database
+4. Vào Project Settings - Service Accounts
+5. Tạo private key mới
+6. Copy thông tin vào file .env của backend
 
-### 5. Twilio Configuration (Optional)
+### 5. Cấu hình Twilio (Tùy chọn)
 
-1. Sign up at https://www.twilio.com
-2. Get Account SID and Auth Token
-3. Get Twilio phone number
-4. Update backend .env with credentials
-5. Change SMS_PROVIDER=dev to SMS_PROVIDER=twilio
+1. Đăng ký tại https://www.twilio.com
+2. Lấy Account SID và Auth Token
+3. Lấy số điện thoại Twilio
+4. Cập nhật thông tin vào file .env của backend
+5. Đổi SMS_PROVIDER=dev thành SMS_PROVIDER=twilio
 
-Note: In development mode (SMS_PROVIDER=dev), access codes are logged to console.
+Lưu ý: Ở chế độ development (SMS_PROVIDER=dev), mã xác thực sẽ được hiển thị trong console.
 
-## Running the Application
+## Chạy ứng dụng
 
-### Start Backend
+### Chạy Backend
 
 ```bash
 cd backend
 npm start
 ```
 
-Backend runs on http://localhost:3001
+Backend chạy tại http://localhost:3001
 
-### Start Frontend
+### Chạy Frontend
 
 ```bash
 cd frontend
 npm start
 ```
 
-Frontend runs on http://localhost:3000
+Frontend chạy tại http://localhost:3000
 
-## Environment Variables
+## Biến môi trường
 
 ### Backend .env
-- PORT: Server port (default: 3001)
-- TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER: Twilio credentials
-- EMAIL_USER, EMAIL_PASS: Gmail credentials for sending emails
-- FIREBASE_PROJECT_ID, FIREBASE_PRIVATE_KEY, FIREBASE_CLIENT_EMAIL: Firebase credentials
-- NODE_ENV: development or production
-- SMS_PROVIDER: dev, twilio, or sms.to
-- FRONTEND_URL: Frontend URL for CORS
+- PORT: Cổng server (mặc định: 3001)
+- TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER: Thông tin Twilio
+- EMAIL_USER, EMAIL_PASS: Thông tin Gmail để gửi email
+- FIREBASE_PROJECT_ID, FIREBASE_PRIVATE_KEY, FIREBASE_CLIENT_EMAIL: Thông tin Firebase
+- NODE_ENV: development hoặc production
+- SMS_PROVIDER: dev, twilio, hoặc sms.to
+- FRONTEND_URL: URL frontend cho CORS
 
 ### Frontend .env
-- REACT_APP_API_URL: Backend API URL
-- REACT_APP_SOCKET_URL: Socket.io server URL
+- REACT_APP_API_URL: URL API backend
+- REACT_APP_SOCKET_URL: URL server Socket.io
 
-## API Endpoints
 
-### Authentication
-- POST /api/auth/createAccessCode
-- POST /api/auth/validateAccessCode
-- POST /api/auth/loginEmail
-- POST /api/auth/validateEmailAccessCode
 
-### Instructor
-- POST /api/instructor/addStudent
-- POST /api/instructor/assignLesson
-- GET /api/instructor/students
-- GET /api/instructor/student/:phone
-- PUT /api/instructor/editStudent/:phone
-- DELETE /api/instructor/student/:phone
-
-### Student
-- GET /api/student/myLessons?phone=xxx
-- POST /api/student/markLessonDone
-- PUT /api/student/editProfile
-
-## Troubleshooting
-
-### SMS not sending
-Check console logs for access code when SMS_PROVIDER=dev
-
-### Email not sending
-Use Gmail App Password (not regular password) for EMAIL_PASS
-
-### Socket.io connection failed
-Verify REACT_APP_SOCKET_URL matches backend port
-
-### Firebase errors
-Ensure private key format is correct with \n for line breaks

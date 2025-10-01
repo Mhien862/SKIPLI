@@ -23,9 +23,14 @@ router.post('/createAccessCode', async (req, res) => {
       createdAt: new Date().toISOString()
     });
 
-    await sendSMS(phoneNumber, `Your access code is: ${accessCode}`);
+    await sendSMS(phoneNumber, ` access code : ${accessCode}`);
 
-    res.json({ success: true, message: 'Access code sent' });
+    const response = { success: true, message: 'Access code sent' };
+    if (process.env.NODE_ENV === 'development') {
+      response.devCode = accessCode;
+    }
+
+    res.json(response);
   } catch (error) {
     console.error('Error creating access code:', error);
     res.status(500).json({ error: 'Failed to create access code' });
@@ -108,7 +113,12 @@ router.post('/loginEmail', async (req, res) => {
 
     await sendEmail(email, 'Your Classroom Access Code', emailHtml);
 
-    res.json({ success: true, message: 'Access code sent to email' });
+    const response = { success: true, message: 'Access code sent to email' };
+    if (process.env.NODE_ENV === 'development') {
+      response.devCode = accessCode;
+    }
+
+    res.json(response);
   } catch (error) {
     console.error('Error sending email code:', error);
     res.status(500).json({ error: 'Failed to send access code' });

@@ -18,7 +18,6 @@ const StudentDashboard = () => {
 
   useEffect(() => {
     fetchLessons();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -75,9 +74,12 @@ const StudentDashboard = () => {
         message.error('User phone number not found');
         return;
       }
-      await studentAPI.markLessonDone(user.phone, lessonId);
+      const response = await studentAPI.markLessonDone(user.phone, lessonId);
+      const updatedLessons = response.data.lessons;
+      setLessons(updatedLessons);
+      const updatedUser = { ...user, lessons: updatedLessons };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
       message.success('Lesson marked as done');
-      fetchLessons();
     } catch (error) {
       console.error('Error marking lesson done:', error);
       message.error(error.response?.data?.error || 'Failed to mark lesson as done');
