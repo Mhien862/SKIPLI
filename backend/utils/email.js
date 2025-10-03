@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 const sendEmail = async (to, subject, html) => {
   if (process.env.DEV_MODE === 'true') {
     console.log(`[DEV MODE] Email to ${to}: ${subject}`);
-    console.log(html);
+    // console.log(html);
     return { success: true, message: 'Email sent (dev mode)' };
   }
 
